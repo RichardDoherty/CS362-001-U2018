@@ -518,11 +518,14 @@ public class DataHandler {
         Node parentNode = apptElement.getParentNode();
         parentNode.removeChild(apptElement);
         appt.setXmlElement(null);
-        
-        if (isAutoSave()) {
+       
+	//Bug # 5 create save and change isAutoSave() to save = true	
+       	boolean save = isAutoSave();	
+        if (save = true) {
             return save();
         }
         else {
+
             return true;
         }
     }

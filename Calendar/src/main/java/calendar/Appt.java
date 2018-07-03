@@ -64,8 +64,8 @@ public class Appt{
     /** Used for setting appointments to recur yearly */
     public static final int RECUR_BY_YEARLY = 3;
     
-    /** Used for setting appointments to recur forever */
-    public static final int RECUR_NUMBER_FOREVER = 1000;
+    /** Used for setting appointments to recur forever *///Bug 4
+    public static final int RECUR_NUMBER_FOREVER = 100; //Changed from 1000
     
     /** Used for setting appointments to never recur */
     public static final int RECUR_NUMBER_NEVER = 0;
@@ -117,6 +117,7 @@ public class Appt{
     setEmailAddress(emailAddress);
     
     //Set default recurring information
+    //changed to an integer instead of 
     int[] recurringDays = new int[0];
     setRecurrence(recurringDays, RECUR_BY_MONTHLY, 0, RECUR_NUMBER_NEVER);
     
@@ -145,7 +146,8 @@ public class Appt{
                 String emailAddress) {
                     
          //Just call the other constructor
-         this(NO_TIME, NO_TIME, startDay, startMonth, startYear, title, 
+	 //Bug #2 Change NO_TIME for 0 (Line 150)
+         this(0, 0, startDay, startMonth, startYear, title, 
             description, emailAddress);
          this.valid=true;
     }
@@ -169,13 +171,13 @@ public class Appt{
 
 		if (startMonth < 1 || startMonth > 12)
 			this.valid = false;
-		else if (startHour < 0 || startHour > 23)
+		else if (startHour <= 0 || startHour > 23)//replaced < with <= 
 			this.valid = false;
 		else if (startMinute < 0 || startMinute > 59)
 			this.valid = false;
-		else if (startYear <= 0)
+		else if (startYear <= 0) 
 			this.valid = false;
-		else {
+		else { 
 			int NumDaysInMonth = CalendarUtil.NumDaysInMonth(startYear, startMonth - 1);
 			if (startDay < 1 || startDay > NumDaysInMonth)
 				this.valid = false;
@@ -223,16 +225,22 @@ public class Appt{
     public void setDescription(String description) {
         if (description == null)
             this.description = "";
-        else
+        else //Bug #3
             this.description = description;
     }
     /** Sets emailAddress */
     private void setEmailAddress(String emailAddress) {
-        if (emailAddress == null)
+	
+     //Bug #1 Below Lines 235-237	    
+     if (emailAddress != null)
+            this.emailAddress = emailAddress;
+    }
+/*     if (emailAddress == null)
             this.emailAddress = "";
         else
             this.emailAddress = emailAddress;
-    }   
+    }*/
+
     /** Gets startHour */
     public int getStartHour() {
         return startHour;
