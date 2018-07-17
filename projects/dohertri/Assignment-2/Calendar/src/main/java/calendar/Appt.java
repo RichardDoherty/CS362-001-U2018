@@ -152,7 +152,9 @@ public class Appt{
          this.valid=true;
     }
 
-	/*Sets the XML Element for this appointment*/
+	/**
+     * Sets the XML Element for this appointment
+     */
     public void setXmlElement(Element xmlElement) {
         this.xmlElement = xmlElement;
     }
@@ -191,7 +193,7 @@ public class Appt{
     	this.startHour = startHour;
     }
     
-    /** Sets startMinute */
+    /** Sets startHour */
     public void setStartMinute(int startMinute) {   	
         this.startMinute = startMinute;
     }

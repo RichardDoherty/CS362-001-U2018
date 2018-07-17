@@ -1,19 +1,18 @@
+/** A JUnit test class to test the class CalDay. */
+
 package calendar;
 
 import org.junit.Test;
-
 import static org.junit.Assert.*;
+import calendar.Appt;
+import calendar.CalDay;
+import java.util.*;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Iterator;
-import java.util.LinkedList;
 
-public class CalDayTest {
-	
-	/*Test Objects*/
-	
-	//Object calday
+public class CalDayTest{
+
+  @Test(timeout = 4000)
+  public void test00()  throws Throwable  {
 	
 	int year = 2018;
 	int month = 10;
@@ -27,96 +26,39 @@ public class CalDayTest {
 	String emailAddress = "Email Address for Appt";
 
 	GregorianCalendar Day = new GregorianCalendar(year, month, day);
-	
+	GregorianCalendar Day2 = new GregorianCalendar(2018, 11, 20);
 	CalDay nonvalidCalday = new CalDay();
 	CalDay validCalday = new CalDay(Day);
-	Appt appt1 = new Appt(hour, minute, day, month, year, title, description, emailAddress);
-	Appt appt2 = new Appt(day, month, year, title, description, emailAddress);
-	LinkedList<Appt> nullAppt = null;
+	CalDay testCalday = new CalDay(Day2);
 	
-	 /*Test that the gets methods work as expected.*/
-	 //addAppt
-	 @Test
-	  public void test01()  throws Throwable  {
-		 
-	 }
-	 
-	 //isValid
-	 @Test
-	  public void test02()  throws Throwable  {
-		 
-	 }
-	 
-	 //Iterator
-	 @Test
-	  public void test03()  throws Throwable  {
-		 
-	 }
-	 
-	 //setAppts
-	 @Test
-	  public void test04()  throws Throwable  {
-		 
-	 }
-	 
-	 //setDay
-	 @Test
-	  public void test05()  throws Throwable  {
-		 
-	 }
-	 
-	 //setMonth
-	 @Test
-	  public void test06()  throws Throwable  {
-		 
-	 }
+	assertTrue(validCalday.getAppts() != null);
+	assertTrue(nonvalidCalday.getAppts() == null);
 	
-	 //setYear
-	 @Test
-	  public void test07()  throws Throwable  {
-		 
-	 }
+	assertTrue(validCalday.getSizeAppts() == 0);
 	
-	 //setYear
-	 @Test
-	  public void test08()  throws Throwable  {
-		 
-	 }
-	 
-	 //getAppts
-	 @Test
-	  public void test09()  throws Throwable  {
-		 
-	 }
-	 
-	 //getSizeAppts
-	 @Test
-	  public void test10()  throws Throwable  {
-		 
-	 }
-	 
-	 //getDay
-	 @Test
-	  public void test11()  throws Throwable  {
-		 
-	 }
+	Appt appt0 = new Appt(15, 30, 9, 14, 2018, "Birthday Party", "This is my birthday party", "xyz@gmail.com");
+	appt0.setValid();
+	validCalday.addAppt(appt0);
+	int size = validCalday.getSizeAppts();
+	assertTrue(size == 0);
 	
-	 //getMonth
-	 @Test
-	  public void test12()  throws Throwable  {
-		 
-	 }
-	 
-	 //toString
-	 @Test
-	  public void test13()  throws Throwable  {
-		 
-	 }
-	 
-	 //getFullInformation
-	 @Test
-	  public void test14()  throws Throwable  {
-		 
-	 }
-}
+	assertTrue(validCalday.isValid());
+	assertFalse(nonvalidCalday.isValid());
+	
+	assertEquals(validCalday.getDay(), day);
+	assertEquals(validCalday.getYear(), year);
+	
+	assertTrue(validCalday.iterator() != null);
+	assertTrue(nonvalidCalday.iterator() == null);
+	
+	validCalday.toString();
+	
+	
+	/* Cannot find the right call to the getFullInformation method
+	 * Object testObject = new Object();
+	String testString = validCalday.getFullInformationApp(testObject);*/
+	
+  }
+ 
 
+}

@@ -1,47 +1,42 @@
+
+/** A JUnit test class to test the class DataHandler. */
+
+
 package calendar;
 
 import org.junit.Test;
-
 import static org.junit.Assert.*;
+import calendar.Appt;
+import calendar.CalDay;
+import calendar.DataHandler;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.LinkedList;
 
-public class DataHandlerTest {
-	int yearA = 2018;
-	int monthA = 10;
-	int dayA = 5;
-	
-	int yearB = 2018;
-	int monthB = 12;
-	int dayB = 20;
-	
-	int hour = 12;
-	int minute = 30;
-	
-	String title = "Appt Title";
-	String description = "Appt Description";
-	String emailAddress = "Email Address for Appt";
-	
-	GregorianCalendar day1 = new GregorianCalendar(yearA, monthA, dayA);
-	GregorianCalendar day2 = new GregorianCalendar(yearB, monthB, dayB);
-	
-	CalDay nonvalidCalday = new CalDay();
-	CalDay validCalday = new CalDay(day1);
-	//Appt appt1 = Appt(hour, minute, dayA, monthA, yearA, title, description, emailAddress);
-	//Appt appt2 = Appt(dayB, monthB, yearB, title, description, emailAddress);
-	LinkedList<Appt> nullAppt = null;
+import java.util.*;
 
-	/*Test that the gets methods work as expected.*/
-	 @Test
-	  public void test01()  throws Throwable  {
+
+public class DataHandlerTest{
+
+  @Test(timeout = 4000)
+  public void test00()  throws Throwable  {
+	  
+	  Appt nonValidAppt = new Appt(-10, 30, 12, 2, 2017 ,"Appt","description","emailAddress");
+	  nonValidAppt.setValid();
 	 
-	 }
-
-	 @Test
-	  public void test02()  throws Throwable  {
-		 
-	 }	
+	  Appt validAppt = new Appt(6, 30, 12, 2, 2017 ,"Appt","description","emailAddress");
+	  validAppt.setValid();
+	  
+	  DataHandler data1 = new DataHandler();
+	  DataHandler data2 = new DataHandler("Testfile.txt");
+	  DataHandler data3 = new DataHandler("Testfile.txt", true);
+	  DataHandler data4 = new DataHandler("Testfile.txt", false);
+	  //DataHandler data5 = new DataHandler("");
+	  
+	  GregorianCalendar Day1 = new GregorianCalendar(1990, 10, 5);
+	  GregorianCalendar Day2 = new GregorianCalendar(2018, 12, 14);
+	  data1.saveAppt(validAppt);
+	  List<CalDay> lst1 = data1.getApptRange(Day1, Day2); 
+	    
+	  data1.saveAppt(nonValidAppt);
+  }
 
 }
