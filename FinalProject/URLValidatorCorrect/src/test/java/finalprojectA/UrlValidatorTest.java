@@ -28,7 +28,7 @@ public class UrlValidatorTest extends TestCase {
    private final boolean printIndex = false;//print index that indicates current scheme,host,port,path, query test were using.
 
    public UrlValidatorTest(String testName) {
-      super(testName);
+      super(testName);						//calls parent constructor
    }
 
    @Override
@@ -87,6 +87,8 @@ protected void setUp() {
       assertTrue(urlVal.isValid("http://www.google.com/"));
       int statusPerLine = 60;
       int printed = 0;
+      int testCount = 0;
+      int validCount = 0;
       if (printIndex)  {
          statusPerLine = 6;
       }
@@ -101,15 +103,19 @@ protected void setUp() {
          }
          String url = testBuffer.toString();
          boolean result = urlVal.isValid(url);
-         if(result == true)
+         if(result == true) {
+        	 validCount++;
+        	 System.out.print(validCount + ": ");
         	 System.out.println(url);
+         }
          assertEquals(url, expected, result);
+         /*
          if (printStatus) {
             if (printIndex) {
                System.out.print(testPartsIndextoString());
             } else {
                if (result == expected) {
-                  System.out.print('.');
+            	   System.out.print('.');
                } else {
                   System.out.print('X');
                }
@@ -119,11 +125,13 @@ protected void setUp() {
                System.out.println();
                printed = 0;
             }
-         }
+         } */
+         testCount++;
       } while (incrementTestPartsIndex(testPartsIndex, testObjects));
       if (printStatus) {
          System.out.println();
       }
+      System.out.println("Test Count: " + testCount);
    }
 
    public void testValidator202() {
@@ -185,7 +193,7 @@ protected void setUp() {
     */
    public static void main(String[] argv) {
 
-	   UrlValidatorTest fct = new UrlValidatorTest("url test");
+	  UrlValidatorTest fct = new UrlValidatorTest("url test");
       fct.setUp();
       fct.testIsValid();
       fct.testIsValidScheme();
@@ -199,43 +207,50 @@ protected void setUp() {
     * all of which must be individually valid for the entire URL to be considered
     * valid.
     */
+   //8 Schemes	3 valid
    ResultPair[] testUrlScheme = {new ResultPair("http://", true),
-                               new ResultPair("ftp://", true),
-                               new ResultPair("h3t://", true),
-                               new ResultPair("3ht://", false),
-                               new ResultPair("http:/", false),
-                               new ResultPair("http:", false),
-                               new ResultPair("http/", false),
-                               new ResultPair("://", false),
-                               new ResultPair("", true)};
+                               	 new ResultPair("ftp://", true),
+                               	 new ResultPair("h3t://", true),
+                               	 new ResultPair("3ht://", false),
+                               	 new ResultPair("http:/", false),
+                               	 new ResultPair("http:", false),
+                               	 new ResultPair("http/", false),
+                               	 new ResultPair("://", false),
+                               	 new ResultPair("", true) 
+                               	 };
 
+   //18 Authority	6 valid
    ResultPair[] testUrlAuthority = {new ResultPair("www.google.com", true),
-                                  new ResultPair("go.com", true),
-                                  new ResultPair("go.au", true),
-                                  new ResultPair("0.0.0.0", true),
-                                  new ResultPair("255.255.255.255", true),
-                                  new ResultPair("256.256.256.256", false),
-                                  new ResultPair("255.com", true),
-                                  new ResultPair("1.2.3.4.5", false),
-                                  new ResultPair("1.2.3.4.", false),
-                                  new ResultPair("1.2.3", false),
-                                  new ResultPair(".1.2.3.4", false),
-                                  new ResultPair("go.a", false),
-                                 new ResultPair("go.a1a", false),
-                                  new ResultPair("go.1aa", false),
-                                  new ResultPair("aaa.", false),
-                                  new ResultPair(".aaa", false),
-                                  new ResultPair("aaa", false),
-                                  new ResultPair("", false)
+		   							new ResultPair("go.com", true),
+		   							new ResultPair("go.au", true),
+		   							new ResultPair("0.0.0.0", true),
+		   							new ResultPair("255.255.255.255", true),
+		   							new ResultPair("256.256.256.256", false),
+		   							new ResultPair("255.com", true),
+		   							new ResultPair("1.2.3.4.5", false),
+		   							new ResultPair("1.2.3.4.", false),
+		   							new ResultPair("1.2.3", false),
+		   							new ResultPair(".1.2.3.4", false),
+		   							new ResultPair("go.a", false),
+		   							new ResultPair("go.a1a", false),
+		   							new ResultPair("go.1aa", false),
+		   							new ResultPair("aaa.", false),
+		   							new ResultPair(".aaa", false),
+		   							new ResultPair("aaa", false),
+		   							new ResultPair("", false)
    };
+   
+   //7 ports	4 valid
    ResultPair[] testUrlPort = {new ResultPair(":80", true),
-                             new ResultPair(":65535", true),
-                             new ResultPair(":0", true),
-                             new ResultPair("", true),
-                             new ResultPair(":-1", false),
-                            new ResultPair(":65636",false),
-                             new ResultPair(":65a", false)
+                               new ResultPair(":65535", true),
+                               new ResultPair(":0", true),
+                               new ResultPair("", true),
+                               new ResultPair(":-1", false),
+                               new ResultPair(":65636",false),
+                               new ResultPair(":65a", false)
    };
+   
+   //10 paths	6 valid
    ResultPair[] testPath = {new ResultPair("/test1", true),
                           new ResultPair("/t123", true),
                           new ResultPair("/$23", true),
@@ -248,6 +263,7 @@ protected void setUp() {
                           new ResultPair("/test1//file", false)
    };
    //Test allow2slash, noFragment
+   //15 paths	9 valid
    ResultPair[] testUrlPathOptions = {new ResultPair("/test1", true),
                                     new ResultPair("/t123", true),
                                     new ResultPair("/$23", true),
@@ -265,6 +281,7 @@ protected void setUp() {
                                     new ResultPair("/#/file", false)
    };
 
+   //3 Query	3 valid
    ResultPair[] testUrlQuery = {new ResultPair("?action=view", true),
                               new ResultPair("?action=edit&mode=up", true),
                               new ResultPair("", true)
